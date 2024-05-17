@@ -1,4 +1,5 @@
 import { Model, ModelObject } from "objection";
+import { CommentModel } from "./comment";
 
 export class ArticlesModel extends Model {
   id!: number;
@@ -8,6 +9,19 @@ export class ArticlesModel extends Model {
 
   static get tableName() {
     return "articles";
+  }
+
+  static get relationMappings() {
+    return {
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: CommentModel,
+        join: {
+          from: "comments.article_id",
+          to: "articles.id",
+        },
+      },
+    };
   }
 }
 
